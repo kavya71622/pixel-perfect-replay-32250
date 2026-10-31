@@ -1,11 +1,12 @@
 # Backend integration
-- [ ] Set VITE_API_URL and the shared fallback to the new sunny-setup-copying-leon tunnel; preserve all existing features.
-- [ ] Test the new tunnel health, CORS, and signed-in AI workflows and report any remaining errors.
+- [x] Set VITE_API_URL and the shared fallback to the new sunny-setup-copying-leon tunnel; preserve all existing features.
+- [x] Test the new tunnel health, CORS, and signed-in AI workflows and report any remaining errors.
 - [x] Add Economic Times advance/decline data to Idea Analysis using the supplied Anakin action.
 - [x] Connect Anakin securely and verify a real NSE response through the signed-in page.
 - [x] Inspect existing AI calls and configure the tunnel URL.
 - [x] Forward signed-in access tokens and update backend CORS source without changing API contracts.
 - [x] Test service behavior and attempt the live connection; report external blockers.
 - [x] Fix browser CORS failures without changing AI endpoint contracts or saved data.
-- [ ] Verify signed-in AI results and saved analysis through the UI: external blocker, authenticated analyze/chat return Cloudflare 502 HTML from the user's tunnel; local FastAPI/tunnel needs checking.
+- [x] Verify signed-in analysis, chat, and eligibility return real Gemma results using the new tunnel; account storage still works.
+- [ ] Verify a generated and saved roadmap: external blocker, /api/roadmap returns Cloudflare 502 HTML from the user's tunnel; local FastAPI/model logs need checking. Published-origin preflight succeeds; browser test-origin requests use the existing authenticated relay.
 - [x] Check security and request publication of the connection update.
