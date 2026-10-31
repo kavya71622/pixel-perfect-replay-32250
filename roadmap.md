@@ -4,6 +4,6 @@
 - [x] Inspect existing AI calls and configure the tunnel URL.
 - [x] Forward signed-in access tokens and update backend CORS source without changing API contracts.
 - [x] Test service behavior and attempt the live connection; report external blockers.
-- [ ] Fix browser CORS failures without changing AI endpoint contracts or saved data.
-- [ ] Verify signed-in AI results and saved analysis through the UI.
+- [x] Fix browser CORS failures without changing AI endpoint contracts or saved data.
+- [ ] Verify signed-in AI results and saved analysis through the UI: external blocker, authenticated analyze/chat return Cloudflare 502 HTML from the user's tunnel; local FastAPI/tunnel needs checking.
 - [ ] Check security and publish the connection update.

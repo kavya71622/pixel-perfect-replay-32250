@@ -24,7 +24,8 @@ export async function forwardBackend(form: FormData, authorization?: string) {
   }
   try {
     const response = await fetch(`${API_URL}${path}`, { method: path === "/api/health" ? "GET" : "POST", headers, body, signal: AbortSignal.timeout(200_000), redirect: "error" });
-    return { status: response.status, data: await response.json().catch(() => null) };
+    const data = await response.json().catch(() => null);
+    return { status: response.status, data: data ?? { detail: `Cloudflare Tunnel returned a non-JSON response (${response.status}). Restart or check your local FastAPI and tunnel connection.` } };
   } catch (error) {
     return { status: error instanceof Error && error.name === "TimeoutError" ? 504 : 502, data: { detail: "The AI backend could not respond. Check FastAPI and the Cloudflare Tunnel, then try again." } };
   }
