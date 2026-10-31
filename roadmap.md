@@ -1,4 +1,6 @@
 # Backend integration
+- [ ] Set VITE_API_URL and the shared fallback to the new sunny-setup-copying-leon tunnel; preserve all existing features.
+- [ ] Test the new tunnel health, CORS, and signed-in AI workflows and report any remaining errors.
 - [x] Add Economic Times advance/decline data to Idea Analysis using the supplied Anakin action.
 - [x] Connect Anakin securely and verify a real NSE response through the signed-in page.
 - [x] Inspect existing AI calls and configure the tunnel URL.
