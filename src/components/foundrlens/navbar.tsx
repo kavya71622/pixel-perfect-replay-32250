@@ -1,4 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 import { Menu, Focus } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -8,11 +10,15 @@ const links = [
   { label: "Explore Opportunities", to: "/explore" },
   { label: "Eligibility Checker", to: "/eligibility" },
   { label: "My Startups", to: "/my-startups" },
+  { label: "Roadmaps", to: "/roadmaps" },
   { label: "AI Co-Founder", to: "/co-founder" },
 ] as const;
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  async function signOut() { await supabase.auth.signOut(); navigate({ to: "/auth", replace: true }); }
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/90 backdrop-blur">
@@ -47,8 +53,9 @@ export function Navbar() {
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             )}
           >
-            Get Started
+            {user ? "New analysis" : "Get Started"}
           </Link>
+          {user ? <button onClick={signOut} className={navbarLinkClass}>Sign out</button> : <Link to="/auth" className={navbarLinkClass}>Sign in</Link>}
         </div>
 
         {/* Mobile navigation */}
@@ -85,6 +92,7 @@ export function Navbar() {
             >
               Get Started
             </Link>
+            {user ? <button onClick={signOut} className="mt-2 rounded-md px-2 py-2.5 text-left text-sm text-muted-foreground hover:bg-accent">Sign out</button> : <Link to="/auth" onClick={() => setMenuOpen(false)} className="mt-2 rounded-md px-2 py-2.5 text-sm text-muted-foreground hover:bg-accent">Sign in</Link>}
           </div>
         </div>
       )}
