@@ -10,4 +10,5 @@
 <!-- LOVABLE:END -->
 
 - AI calls go to the user's own FastAPI/Ollama backend (`backend/`, reached via `VITE_API_URL`); do not swap in a paid AI provider without the user's consent.
+- Keep the public API address in `src/lib/api-config.ts` with a `VITE_API_URL` override; all AI requests use the shared browser service and the current user's bearer token, so endpoint contracts and account storage remain unchanged.
 - Signed-in pages live under `src/routes/_authenticated/`; user data is read/written from the browser client with per-user RLS (`user_id = auth.uid()`), and eligibility files go to the private `eligibility-docs` bucket under `<user_id>/`.

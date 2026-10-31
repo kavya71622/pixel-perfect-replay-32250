@@ -1,0 +1,2 @@
+// Public backend address only; never put credentials in this configuration.
+export const API_URL = (import.meta.env["VITE_API_URL"] || "https://obligation-heard-phd-detection.trycloudflare.com").replace(/\/+$/, "");

@@ -9,7 +9,11 @@ from pydantic import BaseModel, Field
 OLLAMA_URL = os.getenv('OLLAMA_URL', 'http://127.0.0.1:11434')
 OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'gemma4:e2b')
 app = FastAPI(title='FoundrLens AI API', version='1.0.0')
-origins = [x.strip() for x in os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:5173,http://localhost:4173').split(',') if x.strip()]
+origins = list(dict.fromkeys([
+    'https://pixel-perfect-replay-32250.lovable.app',
+    'https://id-preview--ebae88fd-9732-4db5-aea2-8bc803e04a1e.lovable.app',
+    *[x.strip().rstrip('/') for x in os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:5173,http://localhost:4173,http://localhost:8080').split(',') if x.strip()],
+]))
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 
 class IdeaRequest(BaseModel):
