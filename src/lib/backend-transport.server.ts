@@ -8,7 +8,7 @@ export async function forwardBackend(form: FormData, authorization?: string) {
   if (path !== "/api/health" && !authorization?.startsWith("Bearer ")) throw new Error("Please sign in again before using the AI features.");
   const headers = new Headers();
   if (authorization) headers.set("Authorization", authorization);
-  let body: BodyInit | undefined;
+  let body: BodyInit | null = null;
   if (path === "/api/eligibility/extract") {
     const file = form.get("file");
     if (!(file instanceof File) || file.size > 8 * 1024 * 1024) throw new Error("Upload a file smaller than 8 MB.");
