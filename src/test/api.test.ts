@@ -27,7 +27,9 @@ describe("FastAPI integration", () => {
   ] as const)("preserves %s and forwards the signed-in token", async (path, call, payload) => {
     await call();
     expect(fetchMock).toHaveBeenCalledOnce();
-    const [url, options] = fetchMock.mock.calls[0];
+    const callArgs = fetchMock.mock.calls[0];
+    if (!callArgs) throw new Error("Expected a backend request");
+    const [url, options] = callArgs;
     expect(url).toBe(`${API_URL}${path}`);
     expect(options.method).toBe("POST");
     expect(JSON.parse(options.body)).toEqual(payload);
@@ -38,7 +40,9 @@ describe("FastAPI integration", () => {
   it("preserves authenticated multipart extraction without a JSON content type", async () => {
     const file = new File(["Students only"], "criteria.txt", { type: "text/plain" });
     await api.extract(file);
-    const [url, options] = fetchMock.mock.calls[0];
+    const callArgs = fetchMock.mock.calls[0];
+    if (!callArgs) throw new Error("Expected an extraction request");
+    const [url, options] = callArgs;
     expect(url).toBe(`${API_URL}/api/eligibility/extract`);
     expect(options.body.get("file")).toBe(file);
     expect(options.headers.get("Authorization")).toBe("Bearer test-user-token");
@@ -54,7 +58,9 @@ describe("FastAPI integration", () => {
   it("checks existing health endpoint without a token", async () => {
     await api.health();
     expect(getSession).not.toHaveBeenCalled();
-    const [url, options] = fetchMock.mock.calls[0];
+    const callArgs = fetchMock.mock.calls[0];
+    if (!callArgs) throw new Error("Expected a health request");
+    const [url, options] = callArgs;
     expect(url).toBe(`${API_URL}/api/health`);
     expect(options.headers.has("Authorization")).toBe(false);
   });
