@@ -22,7 +22,7 @@ describe("fixed-destination backend relay", () => {
     const form = new FormData(); form.set("path", "/api/chat"); form.set("body", JSON.stringify({ message: "Hello", history: [] }));
     await forwardBackend(form, "Bearer test-user-token");
     const args = fetchMock.mock.calls[0];
-    expect(args?.[0]).toBe("https://bloomberg-prayer-passport-usd.trycloudflare.com/api/chat");
+    expect(args?.[0]).toBe("https://sunny-setup-copying-leon.trycloudflare.com/api/chat");
     expect(args?.[1].headers.get("Authorization")).toBe("Bearer test-user-token");
     expect(JSON.parse(args?.[1].body)).toEqual({ message: "Hello", history: [] });
     expect(args?.[1].redirect).toBe("error");
