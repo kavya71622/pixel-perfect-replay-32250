@@ -12,9 +12,11 @@ app = FastAPI(title='FoundrLens AI API', version='1.0.0')
 origins = list(dict.fromkeys([
     'https://pixel-perfect-replay-32250.lovable.app',
     'https://id-preview--ebae88fd-9732-4db5-aea2-8bc803e04a1e.lovable.app',
+    'https://ebae88fd-9732-4db5-aea2-8bc803e04a1e.lovableproject.com',
     *[x.strip().rstrip('/') for x in os.getenv('CORS_ORIGINS', 'http://localhost:3000,http://localhost:5173,http://localhost:4173,http://localhost:8080').split(',') if x.strip()],
 ]))
-app.add_middleware(CORSMiddleware, allow_origins=origins, allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
+# Wrap the entire app so even unhandled error responses carry CORS headers.
+app = CORSMiddleware(app, allow_origins=origins, allow_credentials=True, allow_methods=['*'], allow_headers=['*'])
 
 class IdeaRequest(BaseModel):
     idea: str = Field(min_length=10, max_length=5000)

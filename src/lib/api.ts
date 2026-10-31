@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 import { API_URL } from "./api-config";
+import { relayAiRequest, relayBackendHealth } from "./backend-transport.functions";
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const headers = new Headers(options?.headers);
@@ -14,7 +15,17 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     response = await fetch(`${API_URL}${path}`, { ...options, headers, signal: options?.signal ?? AbortSignal.timeout(200_000) });
   } catch (error) {
     if (error instanceof Error && error.name === "TimeoutError") throw new Error("The AI backend took too long to respond. Please try again.");
-    throw new Error(`Cannot reach FoundrLens backend at ${API_URL}. Check that FastAPI and Cloudflare Tunnel are running and CORS allows this website.`);
+    if (options?.signal?.aborted) throw error;
+    // Browser CORS failures cannot be repaired from the frontend. Relay only
+    // transport failures through our own origin; keep the same backend contract.
+    const form = new FormData();
+    form.set("path", path);
+    if (options?.body instanceof FormData) {
+      const file = options.body.get("file");
+      if (file instanceof File) form.set("file", file);
+    } else if (typeof options?.body === "string") form.set("body", options.body);
+    const result = path === "/api/health" ? await relayBackendHealth() : await relayAiRequest({ data: form });
+    response = new Response(JSON.stringify(result.data), { status: result.status, headers: { "Content-Type": "application/json" } });
   }
   const data = await response.json().catch(() => null);
   if (!response.ok) {
