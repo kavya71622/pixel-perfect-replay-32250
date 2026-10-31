@@ -12,7 +12,7 @@ export async function requestMarketData(input: MarketRequest, credentials: { app
       "X-Connection-Api-Key": credentials.connectionKey,
       "Content-Type": "application/json",
     },
-    body: data.operation === "start" ? JSON.stringify({ action_id: "et_advance_decline", params: { exchange: data.exchange } }) : undefined,
+    body: data.operation === "start" ? JSON.stringify({ action_id: "et_advance_decline", params: { exchange: data.exchange } }) : null,
     signal: AbortSignal.timeout(30000),
   });
   if (!response.ok) {

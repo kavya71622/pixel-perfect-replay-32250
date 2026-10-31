@@ -39,6 +39,6 @@ describe("Economic Times integration", () => {
     if (!call) throw new Error("No poll sent");
     expect(call[0]).toBe(`https://connector-gateway.lovable.dev/udc_anakin/v1/wire/jobs/${jobId}`);
     expect(call[1].method).toBe("GET");
-    expect(call[1].body).toBeUndefined();
+    expect(call[1].body).toBeNull();
   });
 });
