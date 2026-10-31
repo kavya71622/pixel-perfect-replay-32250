@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnalyzeRouteImport } from './routes/analyze'
+import { Route as CoFounderRouteImport } from './routes/co-founder'
+import { Route as EligibilityRouteImport } from './routes/eligibility'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as MyStartupsRouteImport } from './routes/my-startups'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyzeRoute = AnalyzeRouteImport.update({
+  id: '/analyze',
+  path: '/analyze',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CoFounderRoute = CoFounderRouteImport.update({
+  id: '/co-founder',
+  path: '/co-founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EligibilityRoute = EligibilityRouteImport.update({
+  id: '/eligibility',
+  path: '/eligibility',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyStartupsRoute = MyStartupsRouteImport.update({
+  id: '/my-startups',
+  path: '/my-startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
+  '/co-founder': typeof CoFounderRoute
+  '/eligibility': typeof EligibilityRoute
+  '/explore': typeof ExploreRoute
+  '/my-startups': typeof MyStartupsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
+  '/co-founder': typeof CoFounderRoute
+  '/eligibility': typeof EligibilityRoute
+  '/explore': typeof ExploreRoute
+  '/my-startups': typeof MyStartupsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analyze': typeof AnalyzeRoute
+  '/co-founder': typeof CoFounderRoute
+  '/eligibility': typeof EligibilityRoute
+  '/explore': typeof ExploreRoute
+  '/my-startups': typeof MyStartupsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analyze'
+    | '/co-founder'
+    | '/eligibility'
+    | '/explore'
+    | '/my-startups'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analyze'
+    | '/co-founder'
+    | '/eligibility'
+    | '/explore'
+    | '/my-startups'
+  id:
+    | '__root__'
+    | '/'
+    | '/analyze'
+    | '/co-founder'
+    | '/eligibility'
+    | '/explore'
+    | '/my-startups'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyzeRoute: typeof AnalyzeRoute
+  CoFounderRoute: typeof CoFounderRoute
+  EligibilityRoute: typeof EligibilityRoute
+  ExploreRoute: typeof ExploreRoute
+  MyStartupsRoute: typeof MyStartupsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analyze': {
+      id: '/analyze'
+      path: '/analyze'
+      fullPath: '/analyze'
+      preLoaderRoute: typeof AnalyzeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/co-founder': {
+      id: '/co-founder'
+      path: '/co-founder'
+      fullPath: '/co-founder'
+      preLoaderRoute: typeof CoFounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eligibility': {
+      id: '/eligibility'
+      path: '/eligibility'
+      fullPath: '/eligibility'
+      preLoaderRoute: typeof EligibilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-startups': {
+      id: '/my-startups'
+      path: '/my-startups'
+      fullPath: '/my-startups'
+      preLoaderRoute: typeof MyStartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyzeRoute: AnalyzeRoute,
+  CoFounderRoute: CoFounderRoute,
+  EligibilityRoute: EligibilityRoute,
+  ExploreRoute: ExploreRoute,
+  MyStartupsRoute: MyStartupsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
