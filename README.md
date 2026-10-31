@@ -61,7 +61,7 @@ Open the exact localhost URL printed in the terminal. The Vite port may vary if 
 
 ### Connected Cloudflare backend
 
-The shared frontend service now defaults to `https://bloomberg-prayer-passport-usd.trycloudflare.com`. `VITE_API_URL` can override it; this is a public address, not a secret. No Lovable Cloud auth/database variables need changing. Temporary Cloudflare tunnel URLs change when a new tunnel is created; update the public address when that happens.
+The shared frontend service uses `VITE_API_URL=https://sunny-setup-copying-leon.trycloudflare.com`, set in `.env.development` and `.env.production`, with the same fallback in `src/lib/api-config.ts`. This is a public address, not a secret. No Lovable Cloud auth/database variables need changing. Temporary Cloudflare tunnel URLs change when a new tunnel is created; update the public address when that happens.
 
 Existing calls are unchanged: `GET /api/health`, `POST /api/analyze` and `/api/roadmap` with `{idea}`, `POST /api/chat` with `{message, history}`, `POST /api/eligibility` with `{profile, requirements}`, and multipart `POST /api/eligibility/extract` with a `file` field. Every AI/file request forwards the signed-in user's access token as `Authorization: Bearer …`; health is public. Saved results still use the existing private Lovable Cloud account tables and file bucket.
 
