@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { currentUserId } from "@/hooks/use-auth";
 import { RoadmapView } from "@/components/foundrlens/roadmap-view";
+import { EconomicTimes } from "@/components/foundrlens/economic-times";
 
 export const Route = createFileRoute("/_authenticated/analyze")({
   validateSearch: (search: Record<string, unknown>): { idea?: string } => {
@@ -90,5 +91,6 @@ function AnalyzePage() {
       <div className="mt-7 rounded-[10px] border border-border bg-card p-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><h2 className="text-base font-semibold text-foreground">30-day startup roadmap</h2><p className="mt-1 text-xs text-muted-foreground">A validation-first plan generated for this idea.</p></div><button disabled={roadmapLoading} onClick={()=>void makeRoadmap()} className="inline-flex h-9 items-center gap-2 rounded-md border border-border px-3 text-xs font-medium text-foreground disabled:opacity-50">{roadmapLoading?<Loader2 className="size-4 animate-spin"/>:<Sparkles className="size-4"/>}{roadmapLoading?"Building plan…":"Generate roadmap"}</button></div>{roadmap&&<div className="mt-4"><RoadmapView plan={roadmap} completed={[]}/></div>}</div>
       <p className="mt-5 text-xs leading-relaxed text-tertiary">AI output is a starting point, not market research or professional advice. Competitor names, demand, pricing and legal requirements must be independently verified.</p>
     </>}
+    <EconomicTimes/>
   </main></div>;
 }
