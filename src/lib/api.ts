@@ -1,16 +1,27 @@
-const API_URL = (import.meta.env["VITE_API_URL"] || "http://127.0.0.1:8000").replace(/\/$/, "");
+import { supabase } from "@/integrations/supabase/client";
+import { API_URL } from "./api-config";
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  const headers = new Headers(options?.headers);
+  if (path !== "/api/health") {
+    const { data, error } = await supabase.auth.getSession();
+    if (error || !data.session?.access_token) throw new Error("Please sign in again before using the AI features.");
+    headers.set("Authorization", `Bearer ${data.session.access_token}`);
+  }
+  if (!(options?.body instanceof FormData) && !headers.has("Content-Type") && options?.body) headers.set("Content-Type", "application/json");
   let response: Response;
   try {
-    const headers = new Headers(options?.headers);
-    if (!(options?.body instanceof FormData) && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
-    response = await fetch(`${API_URL}${path}`, { ...options, headers });
-  } catch {
-    throw new Error(`Cannot reach FoundrLens backend at ${API_URL}. Start the Python API and check VITE_API_URL.`);
+    response = await fetch(`${API_URL}${path}`, { ...options, headers, signal: options?.signal ?? AbortSignal.timeout(200_000) });
+  } catch (error) {
+    if (error instanceof Error && error.name === "TimeoutError") throw new Error("The AI backend took too long to respond. Please try again.");
+    throw new Error(`Cannot reach FoundrLens backend at ${API_URL}. Check that FastAPI and Cloudflare Tunnel are running and CORS allows this website.`);
   }
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail || `Request failed (${response.status})`);
+  const data = await response.json().catch(() => null);
+  if (!response.ok) {
+    const detail = typeof data?.detail === "string" ? data.detail : undefined;
+    throw new Error(detail || `AI backend request failed (${response.status}). Check FastAPI and the Cloudflare Tunnel.`);
+  }
+  if (data === null) throw new Error("The AI backend returned a non-JSON response. Check the Cloudflare Tunnel and FastAPI address.");
   return data as T;
 }
 

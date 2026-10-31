@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/analyze")({
     const value = search["idea"];
     return typeof value === "string" && value.trim().length > 0 ? { idea: value.trim() } : {};
   },
-  head: () => ({ meta: [{ title: "Idea Analysis — FoundrLens AI" }, { name: "description", content: "Analyze and validate your startup idea." }] }),
+  head: () => ({ meta: [{ title: "Idea Analysis — FoundrLens AI" }, { name: "description", content: "Analyze and validate your startup idea." }, { property: "og:title", content: "Idea Analysis — FoundrLens AI" }, { property: "og:description", content: "Analyze and validate your startup idea." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: AnalyzePage,
 });
 

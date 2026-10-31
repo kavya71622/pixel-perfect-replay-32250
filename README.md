@@ -59,6 +59,16 @@ Open the exact localhost URL printed in the terminal. The Vite port may vary if 
 
 ## Troubleshooting
 
+### Connected Cloudflare backend
+
+The shared frontend service now defaults to `https://obligation-heard-phd-detection.trycloudflare.com`. `VITE_API_URL` can override it; this is a public address, not a secret. No Lovable Cloud auth/database variables need changing. Temporary Cloudflare tunnel URLs change when a new tunnel is created; update the public address when that happens.
+
+Existing calls are unchanged: `GET /api/health`, `POST /api/analyze` and `/api/roadmap` with `{idea}`, `POST /api/chat` with `{message, history}`, `POST /api/eligibility` with `{profile, requirements}`, and multipart `POST /api/eligibility/extract` with a `file` field. Every AI/file request forwards the signed-in user's access token as `Authorization: Bearer …`; health is public. Saved results still use the existing private Lovable Cloud account tables and file bucket.
+
+Apply the updated `backend/main.py` to your locally running FastAPI copy and restart it. Its CORS configuration always includes the published website and Lovable preview origins, including when `CORS_ORIGINS` overrides local origins. Keep FastAPI, Ollama, and Cloudflare Tunnel running. To apply the equivalent configuration in another backend copy, include `https://pixel-perfect-replay-32250.lovable.app` and the preview origin from `backend/.env.example`, allow `POST`/`GET`/`OPTIONS` and `Authorization`/`Content-Type` headers, then restart FastAPI.
+
+The supplied Python API currently does not validate access tokens. Forwarding a bearer token does not protect public endpoints by itself; enforce token verification in your running backend before treating it as access-controlled. Never send a service-role key to the frontend or this API. These source updates cannot restart or modify FastAPI on your computer automatically.
+
 - **Backend unreachable:** make sure the FastAPI window is running and `.env` in the project root has `VITE_API_URL=http://127.0.0.1:8000`.
 - **Ollama not reachable:** run `ollama serve` in a separate terminal if Ollama is not already running.
 - **Model unavailable:** run `ollama list`; set `OLLAMA_MODEL` to an installed tag in `backend/.env`, then restart FastAPI.

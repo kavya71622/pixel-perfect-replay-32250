@@ -6,7 +6,7 @@ import { Navbar } from "@/components/foundrlens/navbar";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/my-startups")({
-  head: () => ({ meta: [{ title: "My Startups — FoundrLens AI" }, { name: "description", content: "Your saved startup ideas and analysis history." }] }),
+  head: () => ({ meta: [{ title: "My Startups — FoundrLens AI" }, { name: "description", content: "Your saved startup ideas and analysis history." }, { property: "og:title", content: "My Startups — FoundrLens AI" }, { property: "og:description", content: "Your saved startup ideas and analysis history." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: MyStartupsPage,
 });
 
