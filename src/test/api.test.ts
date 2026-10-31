@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { getSession } = vi.hoisted(() => ({ getSession: vi.fn() }));
+const { relayAiRequest, relayBackendHealth } = vi.hoisted(() => ({ relayAiRequest: vi.fn(), relayBackendHealth: vi.fn() }));
+vi.mock("@/lib/backend-transport.functions", () => ({ relayAiRequest, relayBackendHealth }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth: { getSession } } }));
 import { api } from "@/lib/api";
 import { API_URL } from "@/lib/api-config";
@@ -13,6 +15,8 @@ describe("FastAPI integration", () => {
     fetchMock.mockResolvedValue(new Response(JSON.stringify({ reply: "Test reply", model: "gemma4:e2b" })));
     getSession.mockReset();
     getSession.mockResolvedValue({ data: { session: { access_token: "test-user-token" } }, error: null });
+    relayAiRequest.mockReset();
+    relayBackendHealth.mockReset();
   });
 
   it("uses the provided Cloudflare tunnel by default", () => {
@@ -73,5 +77,41 @@ describe("FastAPI integration", () => {
   it("rejects tunnel HTML instead of treating it as an AI result", async () => {
     fetchMock.mockResolvedValue(new Response("<html>Tunnel unavailable</html>"));
     await expect(api.chat("Hello", [])).rejects.toThrow("non-JSON response");
+  });
+
+  it.each([
+    ["/api/analyze", () => api.analyze("A student startup idea"), { idea: "A student startup idea" }],
+    ["/api/roadmap", () => api.roadmap("A student startup idea"), { idea: "A student startup idea" }],
+    ["/api/chat", () => api.chat("What next?", []), { message: "What next?", history: [] }],
+    ["/api/eligibility", () => api.eligibility("Student founder", "Students only"), { profile: "Student founder", requirements: "Students only" }],
+  ] as const)("relays %s with the unchanged payload when browser CORS blocks fetch", async (path, call, payload) => {
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    relayAiRequest.mockResolvedValue({ status: 200, data: { model: "gemma4:latest" } });
+    expect(await call()).toEqual({ model: "gemma4:latest" });
+    const form = relayAiRequest.mock.calls[0]?.[0].data;
+    expect(form.get("path")).toBe(path);
+    expect(JSON.parse(form.get("body"))).toEqual(payload);
+    expect(form.has("authorization")).toBe(false);
+  });
+
+  it("relays multipart extraction without altering the file", async () => {
+    const file = new File(["Students only"], "criteria.txt");
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    relayAiRequest.mockResolvedValue({ status: 200, data: { text: "Students only" } });
+    await api.extract(file);
+    expect(relayAiRequest.mock.calls[0]?.[0].data.get("file")).toBe(file);
+  });
+
+  it("relays public health separately when browser fetch fails", async () => {
+    fetchMock.mockRejectedValue(new TypeError("Failed to fetch"));
+    relayBackendHealth.mockResolvedValue({ status: 200, data: { status: "ok" } });
+    expect(await api.health()).toEqual({ status: "ok" });
+    expect(relayAiRequest).not.toHaveBeenCalled();
+  });
+
+  it("does not retry an HTTP error through the relay", async () => {
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ detail: "Sign in again" }), { status: 401 }));
+    await expect(api.chat("Hello", [])).rejects.toThrow("Sign in again");
+    expect(relayAiRequest).not.toHaveBeenCalled();
   });
 });
