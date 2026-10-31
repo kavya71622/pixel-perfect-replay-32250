@@ -10,33 +10,132 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticated/analyze'
+import { Route as AuthenticatedCoFounderRouteImport } from './routes/_authenticated/co-founder'
+import { Route as AuthenticatedEligibilityRouteImport } from './routes/_authenticated/eligibility'
+import { Route as AuthenticatedMyStartupsRouteImport } from './routes/_authenticated/my-startups'
+import { Route as AuthenticatedRoadmapsRouteImport } from './routes/_authenticated/roadmaps'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAnalyzeRoute = AuthenticatedAnalyzeRouteImport.update({
+  id: '/analyze',
+  path: '/analyze',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCoFounderRoute = AuthenticatedCoFounderRouteImport.update({
+  id: '/co-founder',
+  path: '/co-founder',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedEligibilityRoute =
+  AuthenticatedEligibilityRouteImport.update({
+    id: '/eligibility',
+    path: '/eligibility',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMyStartupsRoute = AuthenticatedMyStartupsRouteImport.update({
+  id: '/my-startups',
+  path: '/my-startups',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRoadmapsRoute = AuthenticatedRoadmapsRouteImport.update({
+  id: '/roadmaps',
+  path: '/roadmaps',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/analyze': typeof AuthenticatedAnalyzeRoute
+  '/co-founder': typeof AuthenticatedCoFounderRoute
+  '/eligibility': typeof AuthenticatedEligibilityRoute
+  '/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/analyze': typeof AuthenticatedAnalyzeRoute
+  '/co-founder': typeof AuthenticatedCoFounderRoute
+  '/eligibility': typeof AuthenticatedEligibilityRoute
+  '/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/explore': typeof ExploreRoute
+  '/_authenticated/analyze': typeof AuthenticatedAnalyzeRoute
+  '/_authenticated/co-founder': typeof AuthenticatedCoFounderRoute
+  '/_authenticated/eligibility': typeof AuthenticatedEligibilityRoute
+  '/_authenticated/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/_authenticated/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/analyze'
+    | '/co-founder'
+    | '/eligibility'
+    | '/my-startups'
+    | '/roadmaps'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/explore'
+    | '/analyze'
+    | '/co-founder'
+    | '/eligibility'
+    | '/my-startups'
+    | '/roadmaps'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/explore'
+    | '/_authenticated/analyze'
+    | '/_authenticated/co-founder'
+    | '/_authenticated/eligibility'
+    | '/_authenticated/my-startups'
+    | '/_authenticated/roadmaps'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ExploreRoute: typeof ExploreRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +147,89 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/analyze': {
+      id: '/_authenticated/analyze'
+      path: '/analyze'
+      fullPath: '/analyze'
+      preLoaderRoute: typeof AuthenticatedAnalyzeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/co-founder': {
+      id: '/_authenticated/co-founder'
+      path: '/co-founder'
+      fullPath: '/co-founder'
+      preLoaderRoute: typeof AuthenticatedCoFounderRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/eligibility': {
+      id: '/_authenticated/eligibility'
+      path: '/eligibility'
+      fullPath: '/eligibility'
+      preLoaderRoute: typeof AuthenticatedEligibilityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/my-startups': {
+      id: '/_authenticated/my-startups'
+      path: '/my-startups'
+      fullPath: '/my-startups'
+      preLoaderRoute: typeof AuthenticatedMyStartupsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/roadmaps': {
+      id: '/_authenticated/roadmaps'
+      path: '/roadmaps'
+      fullPath: '/roadmaps'
+      preLoaderRoute: typeof AuthenticatedRoadmapsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAnalyzeRoute: typeof AuthenticatedAnalyzeRoute
+  AuthenticatedCoFounderRoute: typeof AuthenticatedCoFounderRoute
+  AuthenticatedEligibilityRoute: typeof AuthenticatedEligibilityRoute
+  AuthenticatedMyStartupsRoute: typeof AuthenticatedMyStartupsRoute
+  AuthenticatedRoadmapsRoute: typeof AuthenticatedRoadmapsRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAnalyzeRoute: AuthenticatedAnalyzeRoute,
+  AuthenticatedCoFounderRoute: AuthenticatedCoFounderRoute,
+  AuthenticatedEligibilityRoute: AuthenticatedEligibilityRoute,
+  AuthenticatedMyStartupsRoute: AuthenticatedMyStartupsRoute,
+  AuthenticatedRoadmapsRoute: AuthenticatedRoadmapsRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ExploreRoute: ExploreRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
