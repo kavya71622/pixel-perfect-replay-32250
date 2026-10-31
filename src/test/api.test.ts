@@ -16,7 +16,7 @@ describe("FastAPI integration", () => {
   });
 
   it("uses the provided Cloudflare tunnel by default", () => {
-    expect(API_URL).toBe("https://obligation-heard-phd-detection.trycloudflare.com");
+    expect(API_URL).toBe("https://blogs-merge-subscribe-repair.trycloudflare.com");
   });
 
   it.each([
