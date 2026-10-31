@@ -18,7 +18,7 @@ export interface IdeaAnalysis {
   idea: string; summary: string; problem: string; customers: string[]; strengths: string[];
   risks: string[]; competitors_to_research: string[]; mvp: string[];
   validation_questions: string[]; next_steps: string[]; assumptions: string[];
-  verdict: string; score: number; model: string;
+  verdict: string; score: number; model: string; monetization?: string[]; confidence?: string;
 }
 export const api = {
   health: () => request<{status:string; model:string; model_available:boolean; message?:string}>("/api/health"),

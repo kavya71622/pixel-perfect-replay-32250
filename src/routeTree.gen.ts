@@ -17,6 +17,7 @@ import { Route as AuthenticatedAnalyzeRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedCoFounderRouteImport } from './routes/_authenticated/co-founder'
 import { Route as AuthenticatedEligibilityRouteImport } from './routes/_authenticated/eligibility'
 import { Route as AuthenticatedMyStartupsRouteImport } from './routes/_authenticated/my-startups'
+import { Route as AuthenticatedRoadmapsRouteImport } from './routes/_authenticated/roadmaps'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -58,6 +59,11 @@ const AuthenticatedMyStartupsRoute = AuthenticatedMyStartupsRouteImport.update({
   path: '/my-startups',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedRoadmapsRoute = AuthenticatedRoadmapsRouteImport.update({
+  id: '/roadmaps',
+  path: '/roadmaps',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/co-founder': typeof AuthenticatedCoFounderRoute
   '/eligibility': typeof AuthenticatedEligibilityRoute
   '/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/co-founder': typeof AuthenticatedCoFounderRoute
   '/eligibility': typeof AuthenticatedEligibilityRoute
   '/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/_authenticated/co-founder': typeof AuthenticatedCoFounderRoute
   '/_authenticated/eligibility': typeof AuthenticatedEligibilityRoute
   '/_authenticated/my-startups': typeof AuthenticatedMyStartupsRoute
+  '/_authenticated/roadmaps': typeof AuthenticatedRoadmapsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/co-founder'
     | '/eligibility'
     | '/my-startups'
+    | '/roadmaps'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/co-founder'
     | '/eligibility'
     | '/my-startups'
+    | '/roadmaps'
   id:
     | '__root__'
     | '/'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/_authenticated/co-founder'
     | '/_authenticated/eligibility'
     | '/_authenticated/my-startups'
+    | '/_authenticated/roadmaps'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -184,6 +196,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMyStartupsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/roadmaps': {
+      id: '/_authenticated/roadmaps'
+      path: '/roadmaps'
+      fullPath: '/roadmaps'
+      preLoaderRoute: typeof AuthenticatedRoadmapsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -192,6 +211,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCoFounderRoute: typeof AuthenticatedCoFounderRoute
   AuthenticatedEligibilityRoute: typeof AuthenticatedEligibilityRoute
   AuthenticatedMyStartupsRoute: typeof AuthenticatedMyStartupsRoute
+  AuthenticatedRoadmapsRoute: typeof AuthenticatedRoadmapsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -199,6 +219,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCoFounderRoute: AuthenticatedCoFounderRoute,
   AuthenticatedEligibilityRoute: AuthenticatedEligibilityRoute,
   AuthenticatedMyStartupsRoute: AuthenticatedMyStartupsRoute,
+  AuthenticatedRoadmapsRoute: AuthenticatedRoadmapsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
