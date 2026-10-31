@@ -16,7 +16,7 @@ describe("FastAPI integration", () => {
   });
 
   it("uses the provided Cloudflare tunnel by default", () => {
-    expect(API_URL).toBe("https://upgrades-metals-disabilities-house.trycloudflare.com");
+    expect(API_URL).toBe("https://bloomberg-prayer-passport-usd.trycloudflare.com");
   });
 
   it.each([
