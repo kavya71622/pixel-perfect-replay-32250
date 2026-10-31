@@ -6,4 +6,4 @@
 - [x] Test service behavior and attempt the live connection; report external blockers.
 - [x] Fix browser CORS failures without changing AI endpoint contracts or saved data.
 - [ ] Verify signed-in AI results and saved analysis through the UI: external blocker, authenticated analyze/chat return Cloudflare 502 HTML from the user's tunnel; local FastAPI/tunnel needs checking.
-- [ ] Check security and publish the connection update.
+- [x] Check security and request publication of the connection update.
