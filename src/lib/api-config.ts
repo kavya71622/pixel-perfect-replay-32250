@@ -1,2 +1,2 @@
 // Public backend address only; never put credentials in this configuration.
-export const API_URL = (import.meta.env["VITE_API_URL"] || "https://blogs-merge-subscribe-repair.trycloudflare.com").replace(/\/+$/, "");
+export const API_URL = (import.meta.env["VITE_API_URL"] || "https://upgrades-metals-disabilities-house.trycloudflare.com").replace(/\/+$/, "");
