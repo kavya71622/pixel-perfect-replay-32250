@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MessageSquare, SendHorizonal, Loader2, Trash2 } from "lucide-react";
 import { Navbar } from "@/components/foundrlens/navbar";
 import { api } from "@/lib/api";
-export const Route = createFileRoute("/co-founder")({head:()=>({meta:[{title:"AI Co-Founder — FoundrLens AI"}]}),component:CoFounderPage});
+export const Route = createFileRoute("/_authenticated/co-founder")({head:()=>({meta:[{title:"AI Co-Founder — FoundrLens AI"}]}),component:CoFounderPage});
 type Message={role:"user"|"assistant";content:string};
 const prompts=["Pressure-test my startup idea","What should I validate first?","Help me plan my next 30 days","How do I find my first users?"];
 function CoFounderPage(){

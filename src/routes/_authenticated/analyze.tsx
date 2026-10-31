@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/foundrlens/navbar";
 import { api, type IdeaAnalysis } from "@/lib/api";
 
-export const Route = createFileRoute("/analyze")({
+export const Route = createFileRoute("/_authenticated/analyze")({
   validateSearch: (search: Record<string, unknown>): { idea?: string } => {
     const value = search["idea"];
     return typeof value === "string" && value.trim().length > 0 ? { idea: value.trim() } : {};

@@ -52,8 +52,8 @@
   --radius: 0.625rem;
 
   /* Surfaces — #0D0D0F / #171719 / #222226 */
-  --background: oklch(0.144 0.004 285);
-  --card: oklch(0.19 0.004 285);
+  --background: oklch(0.155 0.022 262);
+  --card: oklch(0.2 0.026 262);
   --popover: oklch(0.205 0.005 285);
 
   /* Text — #F5F5F7 / #A1A1AA / #71717A */
@@ -68,7 +68,7 @@
   /* Secondary / hover surface */
   --secondary: oklch(0.234 0.005 285);
   --secondary-foreground: oklch(0.962 0.003 285);
-  --accent: oklch(0.234 0.005 285);
+  --accent: oklch(0.25 0.03 262);
   --accent-foreground: oklch(0.962 0.003 285);
 
   /* Status */
@@ -78,7 +78,7 @@
   --destructive-foreground: oklch(0.962 0.003 285);
 
   /* Lines — #303034 */
-  --border: oklch(0.305 0.007 285);
+  --border: oklch(0.3 0.03 262);
   --input: oklch(0.305 0.007 285);
   --ring: oklch(0.66 0.146 281);
 

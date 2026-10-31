@@ -50,7 +50,7 @@ async def health():
 
 @app.post('/api/analyze')
 async def analyze(req: IdeaRequest):
-    prompt = '''You are FoundrLens, a careful startup analyst helping an early-stage founder. Analyze the idea below. Do not invent market statistics, competitor facts, customer interviews, or evidence. Mark uncertain statements as assumptions and suggest how to validate them. Return ONLY valid JSON with these keys: summary (string), problem (string), customers (array of strings), strengths (array), risks (array), competitors_to_research (array of strings; say categories/names to investigate, don't claim exhaustive research), mvp (array of strings), validation_questions (array of strings), next_steps (array of strings), assumptions (array of strings), verdict (string), score (integer 1-10). Be practical and specific.\nIDEA: ''' + req.idea
+    prompt = '''You are FoundrLens, a careful startup analyst helping an early-stage founder. Analyze the idea below. Do not invent market statistics, competitor facts, customer interviews, or evidence. Mark uncertain statements as assumptions and suggest how to validate them. Return ONLY valid JSON with these keys: summary (string), problem (string), customers (array of strings), strengths (array), risks (array), competitors_to_research (array of strings; say categories/names to investigate, don't claim exhaustive research), mvp (array of strings), validation_questions (array of strings), next_steps (array of strings), assumptions (array of strings), monetization (array of strings), confidence (string: low, medium or high, reflecting how much depends on unverified assumptions), verdict (string), score (integer 1-10). Be practical and specific.\nIDEA: ''' + req.idea
     raw = await ollama_chat([{'role':'system','content':'Return valid JSON only. No markdown fences.'},{'role':'user','content':prompt}], True)
     try: data = json.loads(raw)
     except json.JSONDecodeError: raise HTTPException(502, 'The model returned an unreadable analysis. Please retry.')
@@ -61,7 +61,7 @@ async def analyze(req: IdeaRequest):
 @app.post('/api/roadmap')
 async def roadmap(req: IdeaRequest):
     prompt = f"""Create a realistic 30-day validation-first startup roadmap for this idea: {req.idea}
-Return ONLY JSON with keys: goal (string), week_1, week_2, week_3, week_4 (each an object with focus (string), tasks (array of 3-5 strings), deliverable (string)), success_metrics (array of strings), risks (array of strings). Assume a student founder with a small budget and limited time. Prioritize customer discovery and validation before building too much. Do not claim results have already happened."""
+Return ONLY JSON with keys: goal (string), week_1, week_2, week_3, week_4 (each an object with focus (string), tasks (array of 3-5 strings), days (array of 7 objects with day (integer 1-30) and task (string)), deliverable (string)), success_metrics (array of strings), risks (array of strings). Assume a student founder with a small budget and limited time. Prioritize customer discovery and validation before building too much. Do not claim results have already happened."""
     raw = await ollama_chat([{'role':'system','content':'Return valid JSON only.'},{'role':'user','content':prompt}], True)
     try: return json.loads(raw)
     except json.JSONDecodeError: raise HTTPException(502, 'The model returned an unreadable roadmap. Please retry.')
@@ -74,7 +74,7 @@ async def chat(req: ChatRequest):
 
 @app.post('/api/eligibility')
 async def eligibility(req: EligibilityRequest):
-    prompt = f'''Compare the founder profile with the opportunity requirements. Do not guess missing facts. Return JSON with: status ("Likely eligible", "Possibly eligible", or "Unlikely eligible"), match_score (integer 0-100), matched (array of exact requirement/profile evidence pairs), missing (array), concerns (array), questions_to_confirm (array), disclaimer (string). Distinguish explicit requirements from assumptions.\nPROFILE:\n{req.profile}\nREQUIREMENTS:\n{req.requirements}'''
+    prompt = f'''Compare the founder profile with the opportunity requirements. Do not guess missing facts. Return JSON with: status (exactly one of "Eligible", "Potentially eligible", "Ineligible", "Insufficient information"), match_score (integer 0-100), matched (array of strings, each quoting the requirement text from the document and the profile fact that satisfies it), missing (array), concerns (array), questions_to_confirm (array), disclaimer (string). Distinguish explicit requirements from assumptions. Use \"Insufficient information\" when the profile or document lacks the facts needed. Never claim eligibility without quoted evidence.\nPROFILE:\n{req.profile}\nREQUIREMENTS:\n{req.requirements}'''
     raw = await ollama_chat([{'role':'system','content':'Return valid JSON only.'},{'role':'user','content':prompt}], True)
     try: return json.loads(raw)
     except json.JSONDecodeError: raise HTTPException(502, 'The model returned an unreadable eligibility result. Please retry.')
