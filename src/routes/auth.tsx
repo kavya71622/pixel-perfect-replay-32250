@@ -14,7 +14,7 @@ function safePath(v: unknown) {
 }
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => ({ redirect: safePath(s.redirect) }),
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined } => ({ redirect: safePath(s["redirect"]) }),
   head: () => ({
     meta: [
       { title: "Sign in — FoundrLens AI" },

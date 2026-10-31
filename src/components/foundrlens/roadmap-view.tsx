@@ -1,6 +1,6 @@
 import { CheckCircle2, Circle } from "lucide-react";
 
-export type RoadmapPlan = Record<string, any>;
+export type RoadmapPlan = any;
 
 /** Flatten a plan into stable task ids: "w{week}-t{index}" or "w{week}-d{day}". */
 export function roadmapTaskIds(plan: RoadmapPlan): string[] {

@@ -25,7 +25,7 @@ function MyStartupsPage() {
   }, []);
   async function remove(id: string) {
     const { error } = await supabase.from("startups").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setItems((x) => x!.filter((i) => i.id !== id));
   }
   return (

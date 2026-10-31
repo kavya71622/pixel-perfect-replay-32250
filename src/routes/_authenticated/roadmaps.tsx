@@ -37,7 +37,7 @@ function RoadmapsPage() {
   }
   async function remove(id: string) {
     const { error } = await supabase.from("roadmaps").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setRows((r) => r!.filter((x) => x.id !== id));
     toast.success("Roadmap deleted");
   }
