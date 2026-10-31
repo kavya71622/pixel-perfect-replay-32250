@@ -7,7 +7,7 @@ import { RoadmapView } from "@/components/foundrlens/roadmap-view";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/roadmaps")({
-  head: () => ({ meta: [{ title: "My Roadmaps — FoundrLens AI" }, { name: "description", content: "Track your saved 30-day startup roadmaps." }] }),
+  head: () => ({ meta: [{ title: "My Roadmaps — FoundrLens AI" }, { name: "description", content: "Track your saved 30-day startup roadmaps." }, { property: "og:title", content: "My Roadmaps — FoundrLens AI" }, { property: "og:description", content: "Track your saved 30-day startup roadmaps." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: RoadmapsPage,
 });
 
